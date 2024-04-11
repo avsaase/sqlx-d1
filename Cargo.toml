@@ -1,0 +1,7 @@
+[package]
+name = "sqlx-d1"
+version = "0.0.1"
+edition = "2021"
+authors = ["Alexander van Saase <avsaase@gmail.com>"]
+
+[dependencies]
