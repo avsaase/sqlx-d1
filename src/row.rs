@@ -1,20 +1,31 @@
-use sqlx_core::{column::ColumnIndex, row::Row, Error};
+use std::sync::Arc;
 
-use crate::{database::D1, value::D1ValueRef};
+use sqlx_core::{column::ColumnIndex, ext::ustr::UStr, row::Row, Error};
 
-pub struct D1Row;
+use crate::{
+    column::D1Column,
+    database::D1,
+    value::{D1Value, D1ValueRef},
+};
+
+pub struct D1Row {
+    values: Box<[D1Value]>,
+    columns: Arc<Vec<D1Column>>,
+    column_names: Arc<Vec<UStr>>,
+}
 
 impl Row for D1Row {
     type Database = D1;
 
-    fn columns(&self) -> &[<Self::Database as sqlx_core::database::Database>::Column] {
-        todo!()
+    fn columns(&self) -> &[D1Column] {
+        &self.columns
     }
 
     fn try_get_raw<I>(&self, index: I) -> Result<D1ValueRef<'_>, Error>
     where
         I: ColumnIndex<Self>,
     {
-        todo!()
+        let index = index.index(self)?;
+        Ok(D1ValueRef::value(&self.values[index]))
     }
 }

@@ -24,6 +24,12 @@ impl<'r> ValueRef<'r> for D1ValueRef<'r> {
     }
 }
 
+impl<'r> D1ValueRef<'r> {
+    pub(crate) fn value(value: &'r D1Value) -> Self {
+        Self(D1ValueData(&value))
+    }
+}
+
 pub struct D1Value;
 
 impl Value for D1Value {
