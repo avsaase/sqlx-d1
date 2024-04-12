@@ -44,9 +44,9 @@ impl<'q> HasStatement<'q> for D1 {
 impl<'q> HasArguments<'q> for D1 {
     type Database = Self;
 
-    type Arguments = D1Arguments;
+    type Arguments = D1Arguments<'q>;
 
-    type ArgumentBuffer = ();
+    type ArgumentBuffer = Vec<worker::d1::D1Type<'q>>;
 }
 
 impl<'r> HasValueRef<'r> for D1 {
