@@ -6,20 +6,29 @@ use sqlx_core::{
 
 use crate::database::D1;
 
+pub enum D1ArgumentValue<'q> {
+    Null,
+    Real(f64),
+    Integer(i32),
+    Text(&'q str),
+    Boolean(bool),
+    Blob(&'q [u8]),
+}
+
 #[derive(Default)]
 pub struct D1Arguments<'q> {
-    pub(crate) values: Vec<worker::d1::D1Type<'q>>,
+    pub(crate) values: Vec<D1ArgumentValue<'q>>,
 }
 
 impl<'q> D1Arguments<'q> {
     fn add<T>(&mut self, value: T)
     where
-        T: Encode<'q, D1> + Type<D1> + Send + 'q,
+        T: Encode<'q, D1>,
     {
-        let ty = T::type_info();
+        // let ty = T::type_info();
 
         if let IsNull::Yes = value.encode(&mut self.values) {
-            self.values.push(worker::d1::D1Type::Null);
+            self.values.push(D1ArgumentValue::Null);
         }
     }
 }

@@ -1,7 +1,7 @@
 use sqlx_core::database::{Database, HasArguments, HasStatement, HasValueRef};
 
 use crate::{
-    arguments::D1Arguments,
+    arguments::{D1ArgumentValue, D1Arguments},
     column::D1Column,
     connection::D1Connection,
     query_result::D1QueryResult,
@@ -46,7 +46,7 @@ impl<'q> HasArguments<'q> for D1 {
 
     type Arguments = D1Arguments<'q>;
 
-    type ArgumentBuffer = Vec<worker::d1::D1Type<'q>>;
+    type ArgumentBuffer = Vec<D1ArgumentValue<'q>>;
 }
 
 impl<'r> HasValueRef<'r> for D1 {
